@@ -75,6 +75,94 @@
     
     
     
+    <article id="post-基础排序算法" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/04/28/%E5%9F%BA%E7%A1%80%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/"
+    >基础排序算法</a> 
+</h2>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/04/28/%E5%9F%BA%E7%A1%80%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="article-date">
+  <time datetime="2020-04-28T09:55:44.712Z" itemprop="datePublished">2020-04-28</time>
+</a>
+      
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <ol>
+<li><p><strong>选择排序</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangyulong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@time</span> 2020/04/26 10:37:07</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> c</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 选择排序， 将c[]按升序进行排序。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">selectionSort</span><span class="params">(Comparable[] c)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 数组长度</span></span><br><span class="line">	<span class="keyword">int</span> N = c.length;</span><br><span class="line">	<span class="comment">// 将c[i] 和  c[i+1..N]中最小的元素交换</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">		<span class="comment">// 默认第 i 个索引位置的元素为最小值的索引</span></span><br><span class="line">		<span class="keyword">int</span> minIndex = i;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; N; j++) &#123;</span><br><span class="line">			<span class="comment">//每次循环找出 minIndex 索引位置元素依次与后面元素的最小值，并把最小值元素的索引放入到minIndex</span></span><br><span class="line">			<span class="keyword">if</span> (SortTemplate.less(c[j], c[minIndex])) &#123;</span><br><span class="line">				minIndex = j;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 比较后进行数值交换</span></span><br><span class="line">		SortTemplate.swap(c, i, minIndex);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p><strong>插入排序</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangyulong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@time</span> 2020/04/27 16:01:12</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> c</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 插入排序， 将c[]按升序排序。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">insertionSort</span><span class="params">(Comparable[] c)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 数组长度</span></span><br><span class="line">	<span class="keyword">int</span> N = c.length;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; N; i++) &#123;</span><br><span class="line">		<span class="comment">// 将 c[j] 插入到 c[j-1]、c[j-2]...之中，并循环判断 c[j] 是否小于c[j - 1], 如果小于则对换位置</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &gt; <span class="number">0</span> &amp;&amp; SortTemplate.less(c[j], c[j - <span class="number">1</span>]); j--) &#123;</span><br><span class="line">			SortTemplate.swap(c, j, j - <span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p><strong>希尔排序</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangyulong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@time</span> 2020/04/28 14:41:23</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> c</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 希尔排序算法， 将c[]按升序排序。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">shellSort</span><span class="params">(Comparable[] c)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> N = c.length;</span><br><span class="line">	<span class="keyword">int</span> h = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (h &lt; N / <span class="number">3</span>) &#123;</span><br><span class="line">		<span class="comment">// 1, 4, 13, 40, 121, 364, 1093, ...</span></span><br><span class="line">		h = <span class="number">3</span> * h + <span class="number">1</span>; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span> (h &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">		<span class="comment">// 将数组变为h有序</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = h; i &lt; N; i++) &#123; </span><br><span class="line">			<span class="comment">// 将c[i]插入到c[i-h], c[i-2*h], c[i-3*h]... 之中</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &gt;= h &amp;&amp; SortTemplate.less(c[j], c[j - h]); j -= h) &#123;</span><br><span class="line">				SortTemplate.swap(c, j, j - h);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		h = h / <span class="number">3</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+</li>
+</ol>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-简单介绍我对 String 的理解" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
