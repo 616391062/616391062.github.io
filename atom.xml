@@ -64,4 +64,28 @@
     
   </entry>
   
+  <entry>
+    <title>HashMap原理分析</title>
+    <link href="http://yoursite.com/2020/03/13/HashMap%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/"/>
+    <id>http://yoursite.com/2020/03/13/HashMap%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</id>
+    <published>2020-03-13T10:29:58.000Z</published>
+    <updated>2020-04-29T03:53:25.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>[hashmap数据结构]</strong></p><p>hashmap是数组和(链表或红黑树)组成的，数据结构中又叫“链表散列”。</p><p><strong>数组</strong>：查询速度快，可以根据索引查询；但插入和删除比较困难。<br><strong>链表</strong>：查询速度慢，需要遍历整个链表，但插入和删除操作比较容易。</p><p><strong>[hashmap特点]</strong></p><p>1) <strong>快速存储</strong> ：hashmap进行 <strong>get</strong> 和 <strong>put</strong> 的时候速度非常快。<br>2) <strong>快速查找</strong>：时间复杂度 <strong>o(1)</strong>，当我们通过 key 去 get 一个value的时候时间复杂度非常的低，效率非常高。<br>3) <strong>可伸缩性</strong>：1. 数组扩容，2. 单向链表如果长度超过 <strong>8</strong> 的话会变成<strong>红黑树</strong>。</p><p><strong>[Hash算法]</strong></p><p>我们知道在 Java 中所有对象都有 hashcode (使用key)，如果使用 object 对象的hashcode 的话会得到 int 类型的值，hashmap中主要是用他的 key 去计算它的哈希值。</p><p><strong>[Hash值的计算]</strong></p><p><strong>Hash值 = (hashcode) ^ (hashcode &gt;&gt;&gt; 16)</strong><br>Hashcode与其自身向右位移16位的异或运算。这样可以确保算出来的值足够随机。因为进行hash计算的时候足够分散，以便于计算数组下标的时候算的值足够分散。前面说过hashmap的底层是由数组组成，数组默认大小是16，那么数组下标的计算就是：<strong>数组下标：hash&amp;(16-1) = hash%16</strong><br>对哈希计算得到的hash进行16的求余，得到一个16的位数，比如说是1到15之间的一个数，hashmap 会与 hash值和15进行与运算。这种位运算效率会更高。</p><p><strong>[Hash冲突]</strong></p><p>不同的对象算出来的数组下标是相同的这样就会产生hash冲突，Hash冲突会产生单向链表。当单向链表达到一定长度后效率会非常低，在jdk1.8以后加入了红黑树，也就是说单线列表达到一定长度后就会变成一个红黑树。</p><p><strong>[Hash扩容]</strong></p><p>Hashmap的扩容并不是为单向链表准备的，单向链表只是为了解决hash冲突准备的。也就是说当数组达到一定长度，比如说hashmap默认数组长度是16，那么达到触发条件，数组存储比例达到了75% ，也就是16*0.75=12的时候就会发生扩容，同时为了使碰撞几率小，容量扩容是2的幂次方。</p><p><strong>红黑树</strong>： 一种二叉树，高效的检索效率。</p><p><strong>触发条件</strong>： 当链表长度大于8的时候，链表就会变成红黑树，将后面的数据存在二叉树中。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;[hashmap数据结构]&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;hashmap是数组和(链表或红黑树)组成的，数据结构中又叫“链表散列”。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;数组&lt;/strong&gt;：查询速度快，可以根据索引查询；但插入和删除比较困难。&lt;br&gt;&lt;str
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
 </feed>
