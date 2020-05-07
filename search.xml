@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>HashMap原理分析</title>
+    <url>/2020/03/13/HashMap%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</url>
+    <content><![CDATA[<p><strong>[hashmap数据结构]</strong></p>
+<p>hashmap是数组和(链表或红黑树)组成的，数据结构中又叫“链表散列”。</p>
+<p><strong>数组</strong>：查询速度快，可以根据索引查询；但插入和删除比较困难。<br><strong>链表</strong>：查询速度慢，需要遍历整个链表，但插入和删除操作比较容易。</p>
+<p><strong>[hashmap特点]</strong></p>
+<p>1) <strong>快速存储</strong> ：hashmap进行 <strong>get</strong> 和 <strong>put</strong> 的时候速度非常快。<br>2) <strong>快速查找</strong>：时间复杂度 <strong>o(1)</strong>，当我们通过 key 去 get 一个value的时候时间复杂度非常的低，效率非常高。<br>3) <strong>可伸缩性</strong>：1. 数组扩容，2. 单向链表如果长度超过 <strong>8</strong> 的话会变成<strong>红黑树</strong>。</p>
+<p><strong>[Hash算法]</strong></p>
+<p>我们知道在 Java 中所有对象都有 hashcode (使用key)，如果使用 object 对象的hashcode 的话会得到 int 类型的值，hashmap中主要是用他的 key 去计算它的哈希值。</p>
+<p><strong>[Hash值的计算]</strong></p>
+<p><strong>Hash值 = (hashcode) ^ (hashcode &gt;&gt;&gt; 16)</strong><br>Hashcode与其自身向右位移16位的异或运算。这样可以确保算出来的值足够随机。因为进行hash计算的时候足够分散，以便于计算数组下标的时候算的值足够分散。前面说过hashmap的底层是由数组组成，数组默认大小是16，那么数组下标的计算就是：<strong>数组下标：hash&amp;(16-1) = hash%16</strong><br>对哈希计算得到的hash进行16的求余，得到一个16的位数，比如说是1到15之间的一个数，hashmap 会与 hash值和15进行与运算。这种位运算效率会更高。</p>
+<p><strong>[Hash冲突]</strong></p>
+<p>不同的对象算出来的数组下标是相同的这样就会产生hash冲突，Hash冲突会产生单向链表。当单向链表达到一定长度后效率会非常低，在jdk1.8以后加入了红黑树，也就是说单线列表达到一定长度后就会变成一个红黑树。</p>
+<p><strong>[Hash扩容]</strong></p>
+<p>Hashmap的扩容并不是为单向链表准备的，单向链表只是为了解决hash冲突准备的。也就是说当数组达到一定长度，比如说hashmap默认数组长度是16，那么达到触发条件，数组存储比例达到了75% ，也就是16*0.75=12的时候就会发生扩容，同时为了使碰撞几率小，容量扩容是2的幂次方。</p>
+<p><strong>红黑树</strong>： 一种二叉树，高效的检索效率。</p>
+<p><strong>触发条件</strong>： 当链表长度大于8的时候，链表就会变成红黑树，将后面的数据存在二叉树中。</p>
+]]></content>
+  </entry>
+  <entry>
     <title>Redis击穿、穿透、雪崩以及解决方案</title>
     <url>/2020/04/29/Redis%E5%87%BB%E7%A9%BF%E3%80%81%E7%A9%BF%E9%80%8F%E3%80%81%E9%9B%AA%E5%B4%A9%E4%BB%A5%E5%8F%8A%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</url>
     <content><![CDATA[<h4 id=""><a href="#" class="headerlink" title=""></a></h4><ol>
@@ -52,6 +72,36 @@
 <p>​          数据的key不会频繁的更改；</p>
 <p>（2）<strong>将击透的key缓存起来，但是时间不能太长，下次进来是直接返回不存在</strong>。 但是这种情况无法过滤掉动态的key，就是说每次请求进来都是不同额key，这样还是会造成这个问题。</p>
 <p>​         </p>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>基础排序算法</title>
+    <url>/2020/04/28/%E5%9F%BA%E7%A1%80%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</url>
+    <content><![CDATA[<ol>
+<li><p><strong>选择排序</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangyulong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@time</span> 2020/04/26 10:37:07</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> c</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 选择排序， 将c[]按升序进行排序。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">selectionSort</span><span class="params">(Comparable[] c)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 数组长度</span></span><br><span class="line">	<span class="keyword">int</span> N = c.length;</span><br><span class="line">	<span class="comment">// 将c[i] 和  c[i+1..N]中最小的元素交换</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">		<span class="comment">// 默认第 i 个索引位置的元素为最小值的索引</span></span><br><span class="line">		<span class="keyword">int</span> minIndex = i;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; N; j++) &#123;</span><br><span class="line">			<span class="comment">//每次循环找出 minIndex 索引位置元素依次与后面元素的最小值，并把最小值元素的索引放入到minIndex</span></span><br><span class="line">			<span class="keyword">if</span> (SortTemplate.less(c[j], c[minIndex])) &#123;</span><br><span class="line">				minIndex = j;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 比较后进行数值交换</span></span><br><span class="line">		SortTemplate.swap(c, i, minIndex);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p><strong>插入排序</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangyulong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@time</span> 2020/04/27 16:01:12</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> c</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 插入排序， 将c[]按升序排序。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">insertionSort</span><span class="params">(Comparable[] c)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 数组长度</span></span><br><span class="line">	<span class="keyword">int</span> N = c.length;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; N; i++) &#123;</span><br><span class="line">		<span class="comment">// 将 c[j] 插入到 c[j-1]、c[j-2]...之中，并循环判断 c[j] 是否小于c[j - 1], 如果小于则对换位置</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &gt; <span class="number">0</span> &amp;&amp; SortTemplate.less(c[j], c[j - <span class="number">1</span>]); j--) &#123;</span><br><span class="line">			SortTemplate.swap(c, j, j - <span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p><strong>希尔排序</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangyulong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@time</span> 2020/04/28 14:41:23</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> c</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 希尔排序算法， 将c[]按升序排序。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">shellSort</span><span class="params">(Comparable[] c)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> N = c.length;</span><br><span class="line">	<span class="keyword">int</span> h = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (h &lt; N / <span class="number">3</span>) &#123;</span><br><span class="line">		<span class="comment">// 1, 4, 13, 40, 121, 364, 1093, ...</span></span><br><span class="line">		h = <span class="number">3</span> * h + <span class="number">1</span>; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span> (h &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">		<span class="comment">// 将数组变为h有序</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = h; i &lt; N; i++) &#123; </span><br><span class="line">			<span class="comment">// 将c[i]插入到c[i-h], c[i-2*h], c[i-3*h]... 之中</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &gt;= h &amp;&amp; SortTemplate.less(c[j], c[j - h]); j -= h) &#123;</span><br><span class="line">				SortTemplate.swap(c, j, j - h);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		h = h / <span class="number">3</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
 </li>
 </ol>
 ]]></content>
@@ -141,56 +191,6 @@
 <p>true。</p>
 </li>
 </ul>
-</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>HashMap原理分析</title>
-    <url>/2020/03/13/HashMap%E5%8E%9F%E7%90%86%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<p><strong>[hashmap数据结构]</strong></p>
-<p>hashmap是数组和(链表或红黑树)组成的，数据结构中又叫“链表散列”。</p>
-<p><strong>数组</strong>：查询速度快，可以根据索引查询；但插入和删除比较困难。<br><strong>链表</strong>：查询速度慢，需要遍历整个链表，但插入和删除操作比较容易。</p>
-<p><strong>[hashmap特点]</strong></p>
-<p>1) <strong>快速存储</strong> ：hashmap进行 <strong>get</strong> 和 <strong>put</strong> 的时候速度非常快。<br>2) <strong>快速查找</strong>：时间复杂度 <strong>o(1)</strong>，当我们通过 key 去 get 一个value的时候时间复杂度非常的低，效率非常高。<br>3) <strong>可伸缩性</strong>：1. 数组扩容，2. 单向链表如果长度超过 <strong>8</strong> 的话会变成<strong>红黑树</strong>。</p>
-<p><strong>[Hash算法]</strong></p>
-<p>我们知道在 Java 中所有对象都有 hashcode (使用key)，如果使用 object 对象的hashcode 的话会得到 int 类型的值，hashmap中主要是用他的 key 去计算它的哈希值。</p>
-<p><strong>[Hash值的计算]</strong></p>
-<p><strong>Hash值 = (hashcode) ^ (hashcode &gt;&gt;&gt; 16)</strong><br>Hashcode与其自身向右位移16位的异或运算。这样可以确保算出来的值足够随机。因为进行hash计算的时候足够分散，以便于计算数组下标的时候算的值足够分散。前面说过hashmap的底层是由数组组成，数组默认大小是16，那么数组下标的计算就是：<strong>数组下标：hash&amp;(16-1) = hash%16</strong><br>对哈希计算得到的hash进行16的求余，得到一个16的位数，比如说是1到15之间的一个数，hashmap 会与 hash值和15进行与运算。这种位运算效率会更高。</p>
-<p><strong>[Hash冲突]</strong></p>
-<p>不同的对象算出来的数组下标是相同的这样就会产生hash冲突，Hash冲突会产生单向链表。当单向链表达到一定长度后效率会非常低，在jdk1.8以后加入了红黑树，也就是说单线列表达到一定长度后就会变成一个红黑树。</p>
-<p><strong>[Hash扩容]</strong></p>
-<p>Hashmap的扩容并不是为单向链表准备的，单向链表只是为了解决hash冲突准备的。也就是说当数组达到一定长度，比如说hashmap默认数组长度是16，那么达到触发条件，数组存储比例达到了75% ，也就是16*0.75=12的时候就会发生扩容，同时为了使碰撞几率小，容量扩容是2的幂次方。</p>
-<p><strong>红黑树</strong>： 一种二叉树，高效的检索效率。</p>
-<p><strong>触发条件</strong>： 当链表长度大于8的时候，链表就会变成红黑树，将后面的数据存在二叉树中。</p>
-]]></content>
-  </entry>
-  <entry>
-    <title>基础排序算法</title>
-    <url>/2020/04/28/%E5%9F%BA%E7%A1%80%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/</url>
-    <content><![CDATA[<ol>
-<li><p><strong>选择排序</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangyulong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@time</span> 2020/04/26 10:37:07</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> c</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 选择排序， 将c[]按升序进行排序。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">selectionSort</span><span class="params">(Comparable[] c)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 数组长度</span></span><br><span class="line">	<span class="keyword">int</span> N = c.length;</span><br><span class="line">	<span class="comment">// 将c[i] 和  c[i+1..N]中最小的元素交换</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; N; i++) &#123;</span><br><span class="line">		<span class="comment">// 默认第 i 个索引位置的元素为最小值的索引</span></span><br><span class="line">		<span class="keyword">int</span> minIndex = i;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; N; j++) &#123;</span><br><span class="line">			<span class="comment">//每次循环找出 minIndex 索引位置元素依次与后面元素的最小值，并把最小值元素的索引放入到minIndex</span></span><br><span class="line">			<span class="keyword">if</span> (SortTemplate.less(c[j], c[minIndex])) &#123;</span><br><span class="line">				minIndex = j;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 比较后进行数值交换</span></span><br><span class="line">		SortTemplate.swap(c, i, minIndex);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ol>
-<ol start="2">
-<li><p><strong>插入排序</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangyulong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@time</span> 2020/04/27 16:01:12</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> c</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 插入排序， 将c[]按升序排序。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">insertionSort</span><span class="params">(Comparable[] c)</span> </span>&#123;</span><br><span class="line">	<span class="comment">// 数组长度</span></span><br><span class="line">	<span class="keyword">int</span> N = c.length;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; N; i++) &#123;</span><br><span class="line">		<span class="comment">// 将 c[j] 插入到 c[j-1]、c[j-2]...之中，并循环判断 c[j] 是否小于c[j - 1], 如果小于则对换位置</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &gt; <span class="number">0</span> &amp;&amp; SortTemplate.less(c[j], c[j - <span class="number">1</span>]); j--) &#123;</span><br><span class="line">			SortTemplate.swap(c, j, j - <span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ol>
-<ol start="3">
-<li><p><strong>希尔排序</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> wangyulong</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@time</span> 2020/04/28 14:41:23</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> c</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@description</span> 希尔排序算法， 将c[]按升序排序。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">shellSort</span><span class="params">(Comparable[] c)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> N = c.length;</span><br><span class="line">	<span class="keyword">int</span> h = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">while</span> (h &lt; N / <span class="number">3</span>) &#123;</span><br><span class="line">		<span class="comment">// 1, 4, 13, 40, 121, 364, 1093, ...</span></span><br><span class="line">		h = <span class="number">3</span> * h + <span class="number">1</span>; </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">while</span> (h &gt;= <span class="number">1</span>) &#123;</span><br><span class="line">		<span class="comment">// 将数组变为h有序</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = h; i &lt; N; i++) &#123; </span><br><span class="line">			<span class="comment">// 将c[i]插入到c[i-h], c[i-2*h], c[i-3*h]... 之中</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = i; j &gt;= h &amp;&amp; SortTemplate.less(c[j], c[j - h]); j -= h) &#123;</span><br><span class="line">				SortTemplate.swap(c, j, j - h);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		h = h / <span class="number">3</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-
 </li>
 </ol>
 ]]></content>
